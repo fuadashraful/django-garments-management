@@ -39,12 +39,11 @@ class Product(models.Model):
 
 
 class Delivery(models.Model):
-    product_id=models.ForeignKey(Product,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
     shipment_id=models.CharField(max_length=20,blank=True)
     delivery_owner=models.ForeignKey(User,on_delete=models.CASCADE)
     quantity=models.IntegerField()
     total_bill=models.IntegerField(default=0)
-    delivery_date=models.DateField()
     
     def __str__(self):
         return "Owner {}".format(self.delivery_owner.username)

@@ -24,8 +24,9 @@ class UserProfile(models.Model):
     fax=models.CharField(max_length=50,blank=True,null=True)
 
     def save(self, *args, **kwargs):
-        new_image = compress(self.image)
-        self.image = new_image
+        if self.image:
+            new_image = compress(self.image)
+            self.image = new_image
         super(UserProfile,self).save(*args, **kwargs)
 
     def __str__(self):

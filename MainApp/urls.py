@@ -20,10 +20,14 @@ from django.shortcuts import render
 
 def home(request):
     return render(request,'base.html')
+
+def about(request):
+    return render(request,'about_us.html')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/',include('accounts.urls')),
     path('garments/',include('product.urls')),
     path('',home,name='home'),
+    path('about_us',about,name='about')
 
 ]

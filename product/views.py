@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages,auth
 from django.contrib.auth.decorators import login_required
-from .models import Product,Delivery,Query
+from .models import Product,Delivery,Query,Employee
+from .forms import EmployeeForm
 import string
 import random
 
@@ -61,5 +62,31 @@ def deleteOrder(request,id=None):
     return redirect('all_orders')
 
 @login_required
+def addEmployee(request):
+
+    context={}
+    if request.method=="POST":
+        form=EmployeeForm(request.POST)
+        if form.is_valid():
+            #print("form is valid")
+            employee=form.save(commit=False)
+            employee.save()
+            messages.success(request,"Employee Saved Successfully")
+        return redirect('profile',id=request.user.id)
+    else:
+        form=EmployeeForm()
+        context['form']=form
+    return render(request,'admin/add_employee.html',context)
+
+@login_required
+def deleteEmployee(request,id=None):
+    employee=Employee.objects.get(pk=id)
+    employee.delete()
+    messages.warning(request,"Employee deleted successfully")
+    return redirect('all_employee')
+
 def allEmployee(request):
-    return render(request,'admin/all_employee.html')
+    context={}
+    employees=Employee.objects.all()
+    context['employees']=employees
+    return render(request,'admin/all_employee.html',context)

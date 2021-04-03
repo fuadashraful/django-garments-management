@@ -15,6 +15,15 @@
     <title>ABC Garments</title>
   </head>
   <body>
+	{% if messages %}
+	
+		{% for message in messages %}
+
+		<div class="alert alert-success text-center messages" role="alert">
+			{{ message }}
+		</div>
+		{% endfor %}
+	{% endif %}
 	<nav class="navbar navbar-inverse navbar-global navbar-fixed-top">
 		<div class="container-fluid">
 		  <div class="navbar-header">
@@ -29,6 +38,7 @@
 		<a href="#" class="btn-expand-collapse"><span class="glyphicon glyphicon-menu-left"></span></a>
 			<ul class="navbar-primary-menu">
 				<li>
+				<a href="{% url 'add_employee' %}"><i class="fa fa-users"> </i> <span class="nav-label">Add Employee</span></a>
 				<a href="{% url 'all_employee' %}"><i class="fa fa-users"> </i> <span class="nav-label">All Employee</span></a>
 				<a href="#"> <i class="fa fa-sitemap"> </i> <span class="nav-label">Garments Material</span></a>
 				<a href="#"> <i class="fa fa-address-card"></i> <span class="nav-label">Attendence</span></a>

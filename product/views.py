@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages,auth
 from django.contrib.auth.decorators import login_required
-from .models import Product,Delivery,Query,Employee
+from .models import Product,Delivery,Query,Employee,Attendance
 from .forms import EmployeeForm
 import string
 import random
@@ -90,3 +90,25 @@ def allEmployee(request):
     employees=Employee.objects.all()
     context['employees']=employees
     return render(request,'admin/all_employee.html',context)
+
+@login_required
+def takeAttendence(request):
+    context={}
+    employees=Employee.objects.all()
+    context['employees']=employees
+    if request.method=="POST":
+        attendence_date=request.POST["attendence_date"]
+        
+        attend=Attendance.objects.filter(attendence_date=attendence_date)
+        if len(attend):
+            messages.success(request,"Attendance already taken in this date")
+            return redirect('take_attendence')   
+
+        for i in range(len(employees)):
+            present=request.POST["is_present-{}".format(employees[i].id)]
+            Attendance.objects.create(employee=employees[i],is_present=bool(present),attendence_date=attendence_date)
+
+        messages.success(request,"Attendence of date {} taken Successfully".format(attendence_date))
+        return redirect('profile',id=request.user.id)
+    else:
+        return render(request,'admin/take_attendence.html',context)

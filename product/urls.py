@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings 
 from django.conf.urls.static import static 
 from .views import (products,buyProduct,about,allOrders,deleteOrder,
-    allEmployee,addEmployee,deleteEmployee)
+    allEmployee,addEmployee,deleteEmployee,takeAttendence)
 
 urlpatterns=[
     path('products/',products,name='products'),
@@ -13,4 +13,5 @@ urlpatterns=[
     path('all_employee/',allEmployee,name='all_employee'),
     path('add_employee',addEmployee,name='add_employee'),
     path('delete_employee/<int:id>/',deleteEmployee,name='delete_employee'),
+    path('take_attendence/',takeAttendence,name='take_attendence')
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

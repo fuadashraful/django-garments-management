@@ -78,10 +78,11 @@ class MaterialsUsed(models.Model):
 
 class Attendance(models.Model):
     employee=models.ForeignKey(Employee,on_delete=models.CASCADE)
-    delivery_date=models.DateField()
+    is_present=models.BooleanField(default=False)
+    attendence_date=models.DateField()
 
     def __str__(self):
-        return self.employee.name
+        return "{} Date {}".format(self.employee.first_name,self.attendence_date)
 
 
 class PartTimeWork(models.Model):

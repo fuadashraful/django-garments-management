@@ -102,3 +102,10 @@ class Query(models.Model):
 
     def __str__(self):
         return "query from {} {}".format(self.first_name,self.last_name)
+
+class Notification(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    message=models.TextField()
+
+    def __str__(self):
+        return self.user.username

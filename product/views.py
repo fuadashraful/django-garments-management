@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages,auth
 from django.contrib.auth.decorators import login_required
-from .models import Product,Delivery,Query,Employee,Attendance
-from .forms import EmployeeForm
+from .models import Product,Delivery,Query,Employee,Attendance,Notification
+from .forms import EmployeeForm,NotificationForm
 import string
 import random
 
@@ -112,3 +112,27 @@ def takeAttendence(request):
         return redirect('profile',id=request.user.id)
     else:
         return render(request,'admin/take_attendence.html',context)
+
+@login_required
+def notification(request):
+
+    context={}
+
+    if request.method=="POST":
+        form=NotificationForm(request.POST)
+        if form.is_valid():
+            #print("form is valid")
+            notification=form.save(commit=False)
+            notification.save()
+            messages.success(request,"Notification Sent Successfully")
+        return redirect('profile',id=request.user.id)
+    else:
+        form=NotificationForm()
+        context['form']=form
+        return render(request,'admin/notification.html',context)
+
+def deleteNotification(request,id=None):
+    notification=Notification.objects.get(pk=id)
+    notification.delete()
+    messages.success(request,"Your One notification deleted")
+    return redirect('profile',id=request.user.id)

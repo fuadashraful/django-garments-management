@@ -43,9 +43,10 @@ class Delivery(models.Model):
     delivery_owner=models.ForeignKey(User,on_delete=models.CASCADE)
     quantity=models.IntegerField()
     total_bill=models.IntegerField(default=0)
-    
+    is_delivered=models.BooleanField(default=False)
+    created_at = models.DateField(auto_now_add=True)
     def __str__(self):
-        return "Owner {}".format(self.delivery_owner.username)
+        return "Owner {} {}".format(self.delivery_owner.username,self.created_at)
 
 
 class MadeProduct(models.Model):

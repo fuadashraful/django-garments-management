@@ -2,7 +2,8 @@ from django.urls import path
 from django.conf import settings 
 from django.conf.urls.static import static 
 from .views import (products,buyProduct,about,allOrders,deleteOrder,
-    allEmployee,addEmployee,deleteEmployee,takeAttendence,notification,deleteNotification)
+    allEmployee,addEmployee,deleteEmployee,takeAttendence,notification,deleteNotification,
+    toggleDeliveryStatus)
 
 urlpatterns=[
     path('products/',products,name='products'),
@@ -16,4 +17,5 @@ urlpatterns=[
     path('take_attendence/',takeAttendence,name='take_attendence'),
     path('notification/',notification,name='notification'),
     path('delete_notification/<int:id>/',deleteNotification,name='delete_notification'),
+    path('toggle_delivery_status/<int:id>/',toggleDeliveryStatus,name='toggle_delivery_status'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

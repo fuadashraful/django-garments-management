@@ -50,8 +50,15 @@ def about(request):
 @login_required
 def allOrders(request):
     context={}
-    orders=Delivery.objects.all()
-    context['orders']=orders
+    if request.method=="POST":
+        from_date=request.POST["from"]
+        to_date=request.POST["to"]
+        orders=Delivery.objects.filter(created_at__range=(from_date, to_date))
+        context['orders']=orders
+    else:
+
+        orders=Delivery.objects.all()
+        context['orders']=orders
     return render(request,'admin/all_orders.html',context)
 
 @login_required
@@ -130,9 +137,17 @@ def notification(request):
         form=NotificationForm()
         context['form']=form
         return render(request,'admin/notification.html',context)
-
+@login_required
 def deleteNotification(request,id=None):
     notification=Notification.objects.get(pk=id)
     notification.delete()
     messages.success(request,"Your One notification deleted")
     return redirect('profile',id=request.user.id)
+
+@login_required
+def toggleDeliveryStatus(request,id=None):
+    order=Delivery.objects.get(pk=id)
+    order.is_delivered=(False if order.is_delivered else True)
+    order.save()
+    messages.warning(request,"This Order delivery status changed successfully")
+    return redirect('all_orders')
